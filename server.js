@@ -1,8 +1,19 @@
+
+import 'dotenv/config';
 import app from './app.js';
-import { connectDB } from './config/db.js';
+import mongoose from 'mongoose';
 
-await connectDB('mongodb://localhost:27017/tp');
+const PORT = process.env.PORT || 3000;
 
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
-});
+try {
+  await mongoose.connect(process.env.MONGO_URI);
+  console.log('MongoDB connected');
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+} catch (error) {
+  console.error('Startup error:', error.message);
+  process.exit(1);
+}
+
